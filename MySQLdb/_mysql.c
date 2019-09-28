@@ -480,12 +480,14 @@ _mysql_ConnectionObject_Initialize(
     if (local_infile != -1)
         mysql_options(&(self->connection), MYSQL_OPT_LOCAL_INFILE, (char *) &local_infile);
 
+#ifdef SSL_MODE_DISABLED
     if (disable_ssl) {
         /* Force the client to disable SSL connections */
         unsigned int ssl_mode_disabled = SSL_MODE_DISABLED;
 
         mysql_options(&(self->connection), MYSQL_OPT_SSL_MODE, (char *) &ssl_mode_disabled);
     }
+#endif
 
     if (ssl) {
         mysql_ssl_set(&(self->connection), key, cert, ca, capath, cipher);
